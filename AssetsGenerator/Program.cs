@@ -183,14 +183,71 @@ namespace AssetsGenerator
                 writer.WriteLine(".square { width:100%; height:0px; padding-bottom:100%; overflow:hidden; }");
                 writer.WriteLine(".widescreen { width:100%; height:0px; padding-bottom:56.25%; overflow:hidden; }");
                 writer.WriteLine(".col-bottom-fix { margin-bottom: 30px; }");
+                writer.WriteLine(".link-black { color: rgba(0,0,0,1); }");
+                writer.WriteLine(".link-black:hover { color: rgba(0,0,0,0.5); text-decoration:none; }");
+                writer.WriteLine(".text-bold { font-weight: bold; }");
+                writer.WriteLine(".text-decoration-none:hover, .text-decoration-none a:hover { text-decoration:none; }");
+                writer.WriteLine(".input-group-bordered { border: 1px solid #ced4da; border-radius: 0.25rem; }");
+                writer.WriteLine(".border-control { border-color: #ced4da!important; }");
+                writer.WriteLine(".text-black { color: rgba(0,0,0,1); }");
             }
 
             using (StreamWriter writer = new StreamWriter(outputFile, true))
             {
-                for (int i = 1; i < 31; i++)
+                for (int i = 0; i < 31; i++)
                 {
                     writer.WriteLine($".border-radius-{i} {{ border-radius: {i}px; }}");
                 }
+            }
+
+            using (StreamWriter writer = new StreamWriter(outputFile, true))
+            {
+                for (int i = 1000; i < 2000; i++)
+                {
+                    writer.WriteLine($".z-index-{i} {{ z-index: {i}; }}");
+                }
+            }
+
+            using (StreamWriter writer = new StreamWriter(outputFile, true))
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+                foreach (string breakpoint in breakpoints)
+                {
+                    if (!string.IsNullOrEmpty(breakpoint))
+                    {
+                        stringBuilder.AppendLine($"@media (min-width:{minWidths[breakpoint]}px) {{");
+                    }
+
+                    for (double i = 0; i < 2; i++)
+                    {
+                        string gutterMargin = "margin-left: 0; margin-right: 0;";
+                        string colPadding = "padding-left:0; padding-right:0;";
+                        if (i > 0)
+                        {
+                            gutterMargin = "margin-left: -15px; margin-right: -15px;";
+                            colPadding = "padding-left:15px; padding-right:15px;";
+                        }
+                        if (string.IsNullOrEmpty(breakpoint))
+                        {
+                            string className = $".gutters-{i}";
+                            stringBuilder.AppendLine(className + $" {{ {gutterMargin} }}");
+                            className = $".gutters-{i} > .col, .gutters-{i} > [class*=\"col-\"] ";
+                            stringBuilder.AppendLine(className + $" {{ {colPadding} }}");
+                        }
+                        else
+                        {
+                            string className = $".gutters-{breakpoint}-{i}";
+                            stringBuilder.AppendLine(className + $" {{ {gutterMargin} }}");
+                            className = $".gutters-{breakpoint}-{i} > .col, .gutters-{breakpoint}-{i} > [class*=\"col-\"] ";
+                            stringBuilder.AppendLine(className + $" {{ {colPadding} }}");
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(breakpoint))
+                    {
+                        stringBuilder.AppendLine("}");
+                    }
+                }
+                writer.WriteLine(stringBuilder);
             }
         }
     }
