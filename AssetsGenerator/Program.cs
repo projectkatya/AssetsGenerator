@@ -180,8 +180,9 @@ namespace AssetsGenerator
             // individual classes
             using (StreamWriter writer = new StreamWriter(outputFile, true))
             {
-                writer.WriteLine(".square { width:100%; height:0px; padding-bottom:100%; overflow:hidden; }");
-                writer.WriteLine(".widescreen { width:100%; height:0px; padding-bottom:56.25%; overflow:hidden; }");
+                writer.WriteLine(".square { position:relative; width:100%; padding-bottom:100%; overflow:hidden; }");
+                writer.WriteLine(".widescreen { position:relative; width:100%; padding-bottom:56.25%; overflow:hidden; }");
+                writer.WriteLine(".widescreen *, .square * { position:absolute; height:100%; width:100%;  overflow:hidden; }");
                 writer.WriteLine(".col-bottom-fix { margin-bottom: 30px; }");
                 writer.WriteLine(".link-black { color: rgba(0,0,0,1); }");
                 writer.WriteLine(".link-black:hover { color: rgba(0,0,0,0.5); text-decoration:none; }");
@@ -190,6 +191,7 @@ namespace AssetsGenerator
                 writer.WriteLine(".input-group-bordered { border: 1px solid #ced4da; border-radius: 0.25rem; }");
                 writer.WriteLine(".border-control { border-color: #ced4da!important; }");
                 writer.WriteLine(".text-black { color: rgba(0,0,0,1); }");
+                writer.WriteLine(".ion-label { display:flex; align-items:center; }");
             }
 
             using (StreamWriter writer = new StreamWriter(outputFile, true))
@@ -197,6 +199,10 @@ namespace AssetsGenerator
                 for (int i = 0; i < 31; i++)
                 {
                     writer.WriteLine($".border-radius-{i} {{ border-radius: {i}px; }}");
+                    writer.WriteLine($".border-radius-t-{i} {{ border-top-left-radius: {i}px; border-top-right-radius: {i}px; }}");
+                    writer.WriteLine($".border-radius-r-{i} {{ border-top-right-radius: {i}px; border-bottom-right-radius: {i}px; }}");
+                    writer.WriteLine($".border-radius-b-{i} {{ border-bottom-left-radius: {i}px; border-bottom-right-radius: {i}px; }}");
+                    writer.WriteLine($".border-radius-l-{i} {{ border-top-left-radius: {i}px; border-bottom-left-radius: {i}px; }}");
                 }
             }
 
